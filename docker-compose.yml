@@ -5,7 +5,7 @@ wordpress:
   ports:
     - 8080:80
   volumes:
-    - ./wp-web-push:/var/www/html/wp-content/plugins/wp-web-push
+    - ./wp-web-push/wp-web-push:/var/www/html/wp-content/plugins/wp-web-push
 
 db:
   image: mariadb
