@@ -1,3 +1,3 @@
 [submodule "wp-web-push"]
 	path = wp-web-push
-	url = git@github.com:marco-c/wp-web-push.git
+	url = https://github.com/marco-c/wp-web-push.git
