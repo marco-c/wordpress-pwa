@@ -20,7 +20,7 @@ or the WordPress base image is updated.
 ## Usage
 
 To use this repository, [install the Docker Engine](https://docs.docker.com/engine/installation/)
-(and create/start a Docker Machine on Mac).
+(on Mac, also create/start a Docker Machine).
 
 Then clone the repository (recursively, to synchronize the Git submodule),
 change to its working directory, and create/start a container with the image:
