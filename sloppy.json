@@ -1,0 +1,57 @@
+{
+    "project": "wordpress-pwa",
+    "services": [
+        {
+            "id": "backend",
+            "apps": [
+                {
+                    "id": "mariadb",
+                    "instances": 1,
+                    "mem": 512,
+                    "image": "mariadb",
+                    "env": {
+                        "MYSQL_ROOT_PASSWORD": "$DBROOT",
+                        "MYSQL_USER": "$DBUSER",
+                        "MYSQL_PASSWORD": "$DBPASS",
+                        "MYSQL_DATABASE": "wordpress"
+                    },
+                    "volumes": [
+                        {
+                            "container_path": "/var/lib/mysql",
+                            "mode": "RW",
+                            "size": "500MB"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "frontend",
+            "apps": [
+                {
+                    "id": "apache",
+                    "domain": {
+                        "type": "HTTP",
+                        "uri": "$URI"
+                    },
+                    "instances": 1,
+                    "mem": 512,
+                    "image": "mykmelez/wordpress-pwa:latest",
+                    "port_mappings": [
+                        {
+                            "container_port": 80
+                        }
+                    ],
+                    "env": {
+                        "WORDPRESS_DB_HOST": "mariadb.backend.wordpress-pwa.$USERNAME",
+                        "WORDPRESS_DB_USER": "$DBUSER",
+                        "WORDPRESS_DB_PASSWORD": "$DBPASS"
+                    },
+                    "dependencies": [
+                        "../../backend/mariadb"
+                    ]
+                }
+            ]
+        }
+    ]
+}
