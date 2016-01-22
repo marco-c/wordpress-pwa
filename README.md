@@ -3,7 +3,7 @@
 This repository contains a [Docker](https://www.docker.com/) image that bundles
 [WordPress](https://wordpress.org/) with a plugin
 for [Web Push Notifications](https://developer.mozilla.org/en-US/docs/Web/API/Push_API).
-It extends the [official WordPress image](https://hub.docker.com/_/wordpress/)
+It extends the [official WordPress base image](https://hub.docker.com/_/wordpress/)
 with the [wp-web-push plugin](https://github.com/marco-c/wp-web-push).
 
 It includes a
@@ -11,6 +11,11 @@ It includes a
 to simplify starting a Docker container for this WordPress image with a container
 for the [official MariaDB image](https://hub.docker.com/_/mariadb/), which provides
 a database for the WordPress installation.
+
+The image is [listed on Docker Hub](https://hub.docker.com/r/mykmelez/wordpress-pwa/),
+and it's an [automated build](https://docs.docker.com/docker-hub/builds/),
+which means Docker Hub rebuilds the image whenever the repository is changed
+or the WordPress base image is updated.
 
 ## Usage
 
