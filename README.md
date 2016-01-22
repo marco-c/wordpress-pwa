@@ -14,18 +14,15 @@ a database for the WordPress installation.
 
 ## Usage
 
-To use this repository, first [install the Docker Engine](https://docs.docker.com/engine/installation/)
+To use this repository, [install the Docker Engine](https://docs.docker.com/engine/installation/)
 (and create/start a Docker Machine on Mac).
 
-Then clone the repository (recursively, to synchronize submodules):
+Then clone the repository (recursively, to synchronize the Git submodule),
+change to its working directory, and create/start a container with the image:
+
 
 ```
 git clone --recursive https://github.com/mykmelez/wordpress-pwa.git
-```
-
-Finally, change to the working directory and create/start a container with the image:
-
-```
 cd wordpress-pwa
 docker-compose up
 ```
