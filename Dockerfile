@@ -1,12 +1,25 @@
 # https://github.com/docker-library/wordpress/blob/master/apache/Dockerfile
 FROM wordpress:latest
 
-COPY wp-web-push/wp-web-push /usr/src/wordpress/wp-content/plugins/wp-web-push
-
+# Install the Debian packages we need to build/install other software.
 RUN apt-get update && apt-get install -y \
+    npm \
     unzip \
+    zip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install the PHP "composer" utility, which we need to build wp-web-push.
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Build and install wp-web-push.
+COPY wp-web-push /var/tmp/wp-web-push
+RUN cd /var/tmp/wp-web-push/ \
+    && npm install \
+    && composer install \
+    && make build \
+    && unzip wp-web-push.zip -d /usr/src/wordpress/wp-content/plugins/wp-web-push \
+    && rm -rf /var/tmp/wp-web-push
 
 # Install the WP Force SSL plugin so you can force users to the encrypted
 # variant of your WordPress website.  This installs the plugin, but it doesn't
