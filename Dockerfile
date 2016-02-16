@@ -6,17 +6,13 @@ RUN apt-get update && apt-get install -y \
     npm \
     unzip \
     zip \
+    wget \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-# Install the PHP "composer" utility, which we need to build wp-web-push.
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Build and install wp-web-push.
 COPY wp-web-push /var/tmp/wp-web-push
 RUN cd /var/tmp/wp-web-push/ \
-    && npm install \
-    && composer install \
     && make build \
     && unzip wp-web-push.zip -d /usr/src/wordpress/wp-content/plugins/wp-web-push \
     && rm -rf /var/tmp/wp-web-push
