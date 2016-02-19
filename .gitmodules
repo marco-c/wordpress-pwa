@@ -1,3 +1,6 @@
 [submodule "wp-web-push"]
 	path = wp-web-push
 	url = https://github.com/marco-c/wp-web-push.git
+[submodule "wp-sw-cache"]
+	path = wp-sw-cache
+	url = https://github.com/darkwing/wp-sw-cache
