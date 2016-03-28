@@ -4,6 +4,7 @@ FROM wordpress:latest
 # Install the Debian packages we need to build/install other software.
 RUN apt-get update && apt-get install -y \
     git \
+    node \
     npm \
     unzip \
     wget \
