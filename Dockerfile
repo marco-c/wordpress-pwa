@@ -18,12 +18,12 @@ RUN cd /var/tmp/wp-web-push/ \
     && unzip wp-web-push.zip -d /usr/src/wordpress/wp-content/plugins/wp-web-push \
     && rm -rf /var/tmp/wp-web-push
 
-# Install the PHP "composer" utility, which we need to build wp-sw-cache.
+# Install the PHP "composer" utility, which we need to build offline-shell.
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Build and install wp-sw-cache.
-COPY wp-sw-cache/wp-sw-cache /usr/src/wordpress/wp-content/plugins/wp-sw-cache
-RUN cd /usr/src/wordpress/wp-content/plugins/wp-sw-cache/ \
+# Build and install offline-shell.
+COPY offline-shell/wp-offline-shell /usr/src/wordpress/wp-content/plugins/wp-offline-shell
+RUN cd /usr/src/wordpress/wp-content/plugins/wp-offline-shell/ \
     && composer install
 
 # Install the WP Force SSL plugin so you can force users to the encrypted
