@@ -6,9 +6,8 @@ FROM wordpress:latest
 # We link /usr/local/bin/node to /usr/bin/nodejs to ensure it's available
 # at that name for Node scripts with `#!/usr/bin/env node` shebangs.
 #
-# We install the PHP "composer" utility for offline-shell
-# and wp-add-to-homescreen, but note that wp-web-push installs its own copy
-# of the same utility.
+# We install the PHP "composer" utility only for wp-add-to-homescreen, as both
+# wp-web-push and wp-offline-shell install their own copy of that utility.
 #
 RUN apt-get update && apt-get install -y \
     git \
@@ -32,10 +31,12 @@ RUN cd /var/tmp/wp-web-push/ \
     && unzip wp-web-push.zip -d /usr/src/wordpress/wp-content/plugins/wp-web-push \
     && rm -rf /var/tmp/wp-web-push
 
-# Build and install offline-shell.
-COPY offline-shell/wp-offline-shell /usr/src/wordpress/wp-content/plugins/wp-offline-shell
-RUN cd /usr/src/wordpress/wp-content/plugins/wp-offline-shell/ \
-    && composer install
+# Build and install wp-offline-shell.
+COPY offline-shell /var/tmp/wp-offline-shell
+RUN cd /var/tmp/wp-offline-shell/ \
+    && make build \
+    && unzip wp-offline-shell.zip -d /usr/src/wordpress/wp-content/plugins/wp-offline-shell \
+    && rm -rf /var/tmp/wp-offline-shell
 
 # Build and install wp-add-to-homescreen.
 COPY wp-add-to-homescreen/wp-add-to-homescreen /usr/src/wordpress/wp-content/plugins/wp-add-to-homescreen
