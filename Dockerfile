@@ -2,18 +2,24 @@
 FROM wordpress:latest
 
 # Install the Debian packages we need to build/install other software.
+# We link /usr/local/bin/node to /usr/bin/nodejs to ensure it's available
+# at that name for Node scripts with `#!/usr/bin/env node` shebangs.
 RUN apt-get update && apt-get install -y \
     git \
+    node \
     npm \
     unzip \
     wget \
     zip \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -s /usr/bin/nodejs /usr/local/bin/node
 
 # Build and install wp-web-push.
 COPY wp-web-push /var/tmp/wp-web-push
 RUN cd /var/tmp/wp-web-push/ \
+    && make tools/composer.phar \
+    && tools/composer.phar update \
     && make build \
     && unzip wp-web-push.zip -d /usr/src/wordpress/wp-content/plugins/wp-web-push \
     && rm -rf /var/tmp/wp-web-push
