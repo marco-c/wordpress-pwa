@@ -4,3 +4,6 @@
 [submodule "offline-shell"]
 	path = offline-shell
 	url = https://github.com/mozilla/wp-offline-shell.git
+[submodule "wp-add-to-homescreen"]
+	path = wp-add-to-homescreen
+	url = https://github.com/mozilla/wp-add-to-homescreen.git

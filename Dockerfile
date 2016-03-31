@@ -1,9 +1,15 @@
 # https://github.com/docker-library/wordpress/blob/master/apache/Dockerfile
 FROM wordpress:latest
 
-# Install the Debian packages we need to build/install other software.
+# Install the software packages we need to build/install the Wordpress plugins.
+#
 # We link /usr/local/bin/node to /usr/bin/nodejs to ensure it's available
 # at that name for Node scripts with `#!/usr/bin/env node` shebangs.
+#
+# We install the PHP "composer" utility for offline-shell
+# and wp-add-to-homescreen, but note that wp-web-push installs its own copy
+# of the same utility.
+#
 RUN apt-get update && apt-get install -y \
     git \
     node \
@@ -13,7 +19,9 @@ RUN apt-get update && apt-get install -y \
     zip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && ln -s /usr/bin/nodejs /usr/local/bin/node
+    && ln -s /usr/bin/nodejs /usr/local/bin/node \
+    && npm install -g bower \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Build and install wp-web-push.
 COPY wp-web-push /var/tmp/wp-web-push
@@ -24,13 +32,16 @@ RUN cd /var/tmp/wp-web-push/ \
     && unzip wp-web-push.zip -d /usr/src/wordpress/wp-content/plugins/wp-web-push \
     && rm -rf /var/tmp/wp-web-push
 
-# Install the PHP "composer" utility, which we need to build offline-shell.
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
 # Build and install offline-shell.
 COPY offline-shell/wp-offline-shell /usr/src/wordpress/wp-content/plugins/wp-offline-shell
 RUN cd /usr/src/wordpress/wp-content/plugins/wp-offline-shell/ \
     && composer install
+
+# Build and install wp-add-to-homescreen.
+COPY wp-add-to-homescreen/wp-add-to-homescreen /usr/src/wordpress/wp-content/plugins/wp-add-to-homescreen
+RUN cd /usr/src/wordpress/wp-content/plugins/wp-add-to-homescreen/ \
+    && composer install \
+    && bower --allow-root install
 
 # Install the WP Force SSL plugin so you can force users to the encrypted
 # variant of your WordPress website.  This installs the plugin, but it doesn't
