@@ -25,8 +25,6 @@ RUN apt-get update && apt-get install -y \
 # Build and install wp-web-push.
 COPY wp-web-push /var/tmp/wp-web-push
 RUN cd /var/tmp/wp-web-push/ \
-    && make tools/composer.phar \
-    && tools/composer.phar update \
     && make build \
     && unzip wp-web-push.zip -d /usr/src/wordpress/wp-content/plugins/wp-web-push \
     && rm -rf /var/tmp/wp-web-push
