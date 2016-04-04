@@ -27,6 +27,7 @@ COPY wp-web-push /var/tmp/wp-web-push
 RUN cd /var/tmp/wp-web-push/ \
     && make build \
     && unzip wp-web-push.zip -d /usr/src/wordpress/wp-content/plugins/wp-web-push \
+    && chown -R www-data:www-data /usr/src/wordpress/wp-content/plugins/wp-web-push \
     && rm -rf /var/tmp/wp-web-push
 
 # Build and install wp-offline-shell.
@@ -34,13 +35,15 @@ COPY offline-shell /var/tmp/wp-offline-shell
 RUN cd /var/tmp/wp-offline-shell/ \
     && make build \
     && unzip wp-offline-shell.zip -d /usr/src/wordpress/wp-content/plugins/wp-offline-shell \
+    && chown -R www-data:www-data /usr/src/wordpress/wp-content/plugins/wp-offline-shell \
     && rm -rf /var/tmp/wp-offline-shell
 
 # Build and install wp-add-to-homescreen.
 COPY wp-add-to-homescreen/wp-add-to-homescreen /usr/src/wordpress/wp-content/plugins/wp-add-to-homescreen
 RUN cd /usr/src/wordpress/wp-content/plugins/wp-add-to-homescreen/ \
     && composer install \
-    && bower --allow-root install
+    && bower --allow-root install \
+    && chown -R www-data:www-data /usr/src/wordpress/wp-content/plugins/wp-add-to-homescreen
 
 # Install the WP Force SSL plugin so you can force users to the encrypted
 # variant of your WordPress website.  This installs the plugin, but it doesn't
